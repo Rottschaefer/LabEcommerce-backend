@@ -2,6 +2,7 @@ import { products, purchases, users } from "./dataBase"
 import { CATEGORY } from "./types"
 
  export const createUser = (id: string, email:string, password: string) => {
+    // const newUsers = [...users, {id, email, password}]
     users.push({
         id,
         email,
