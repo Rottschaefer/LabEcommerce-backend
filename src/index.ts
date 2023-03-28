@@ -1,6 +1,6 @@
 import { users, products, purchases } from "./dataBase";
 import { createProduct, createPurchase, createUser, getAllPurchasesFromUserId, getAllUsers, getProductById, queryProductsByName } from "./functions";
-import { CATEGORY, TProduct } from "./types";
+import { CATEGORY, TProduct, TPurchase, TUser } from "./types";
 import  express, { Request, Response} from 'express'
 import cors from 'cors';
 
@@ -65,4 +65,62 @@ app.post('/purchases', (req: Request, res: Response)=>{
     purchases.push({userId, productId, quantity, totalPrice})
 
     res.status(201).send("Compra criada com sucesso")
+})
+
+app.get("/products/:id", (req: Request, res: Response)=>{
+    const id = req.params.id
+    const searched = products.find((product: TProduct)=>product.id === id)
+    res.status(200).send(searched)
+})
+
+app.get("/user/:id/purchases", (req: Request, res: Response)=>{
+    const userId = req.params.id
+    const userPurchases = purchases.filter((purchase: TPurchase)=>purchase.userId === userId)
+    res.status(200).send(userPurchases)
+})
+
+app.delete("/users/:id", (req: Request, res: Response)=>{
+    const id = req.params.id
+    const toDeleteIndex = users.findIndex((user: TUser)=> user.id === id)
+    users.splice(toDeleteIndex, 1)
+    res.status(200).send(users)
+})
+
+app.delete("/products/:id", (req: Request, res: Response)=>{
+    const id = req.params.id
+    const toDeleteIndex = products.findIndex((product: TProduct)=> product.id === id)
+    products.splice(toDeleteIndex, 1)
+    res.status(200).send(products)
+})
+
+app.put("/users/:id", (req: Request, res: Response)=>{
+
+    const id = req.params.id
+    const email = req.body.email
+    const password = req.body.password
+
+    const index = users.findIndex((user:TUser)=>user.id === id)
+    
+    users[index].email = email || users[index].email
+    users[index].password = password || users[index].password
+
+    res.status(200).send(users)
+})
+
+app.put("/products/:id", (req: Request, res: Response)=>{
+
+    const id = req.params.id
+    const name = req.body.name
+    const price = req.body.price
+    const category = req.body.category
+
+
+    const index = products.findIndex((product:TProduct)=>product.id === id)
+    
+    products[index].name = name || products[index].name
+    products[index].price = price || products[index].price
+    products[index].category = category || products[index].category
+
+
+    res.status(200).send(products)
 })
