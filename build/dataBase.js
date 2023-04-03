@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.purchases = exports.products = exports.users = void 0;
+const types_1 = require("./types");
 exports.users = [
     {
         id: "hjmhjg",
@@ -18,13 +19,13 @@ exports.products = [
         id: "iuhnc",
         name: "blusa",
         price: 27,
-        category: "desconto"
+        category: types_1.CATEGORY.ACCESSORIES
     },
     {
         id: "rhkc",
         name: "calça",
         price: 30,
-        category: "padrao"
+        category: types_1.CATEGORY.ELECTRONICS
     }
 ];
 exports.purchases = [

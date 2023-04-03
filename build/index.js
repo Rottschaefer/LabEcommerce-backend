@@ -1,5 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const dataBase_1 = require("./dataBase");
-console.log(dataBase_1.users, dataBase_1.products, dataBase_1.purchases);
+const functions_1 = require("./functions");
+(0, functions_1.createUser)("idkjnk", "buiknjm", "uybinjm");
 //# sourceMappingURL=index.js.map
