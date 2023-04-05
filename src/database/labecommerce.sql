@@ -107,3 +107,39 @@ OFFSET 0;
 SELECT * FROM products
 WHERE price > 100 AND price < 300
 ORDER BY price ASC;
+
+--relações-sql-1
+
+CREATE TABLE purchases(
+    id TEXT PRIMARY KEY UNIQUE NOT NULL,
+    total_price REAL NOT NULL,
+    paid INTEGER NOT NULL,
+    delivered_at TEXT,
+    buyer_id TEXT NOT NULL,
+    FOREIGN KEY (buyer_id) REFERENCES users(id)
+);
+
+INSERT INTO purchases(id, total_price, paid, buyer_id)
+VALUES(01, 100, 0, 2);
+
+INSERT INTO purchases(id, total_price, paid, buyer_id)
+VALUES(02, 200, 0, 2);
+
+INSERT INTO purchases(id, total_price, paid, buyer_id)
+VALUES(03, 77, 1, 3);
+
+INSERT INTO purchases(id, total_price, paid, buyer_id)
+VALUES(04, 566, 1, 3);
+
+UPDATE purchases
+SET delivered_at = datetime("now")
+WHERE id = 04;
+
+SELECT * FROM purchases
+INNER JOIN users
+ON purchases.buyer_id = users.id
+WHERE buyer_id = 3;
+
+SELECT datetime("now");
+
+SELECT * FROM purchases;
