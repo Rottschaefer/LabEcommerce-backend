@@ -16,3 +16,7 @@ No geral, o projeto foi um sucesso e atendeu às expectativas.
 - SQL e SQLite
 - Knex
 - Postman
+
+# Documentação no Postman:
+
+https://documenter.getpostman.com/view/25837050/2s93Xwyj54#intro
