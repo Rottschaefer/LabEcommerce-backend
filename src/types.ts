@@ -18,9 +18,17 @@ export type TProduct = {
     category: CATEGORY
 }
 
+// export type TPurchase = {
+//     userId: string
+//     productId: string
+//     quantity: number
+//     totalPrice: number
+// }
+
 export type TPurchase = {
     userId: string
-    productId: string
-    quantity: number
-    totalPrice: number
+    total_price: string
+    paid: number
+    delivered_at: string
+    buyer_id: string
 }

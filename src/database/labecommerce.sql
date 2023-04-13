@@ -1,145 +1,89 @@
-CREATE TABLE users(
-    id TEXT PRIMARY KEY UNIQUE NOT NULL,
-    email TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL 
-);
+CREATE TABLE
+    users(
+        id TEXT PRIMARY KEY UNIQUE NOT NULL,
+        name TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        created_at TEXT DEFAULT(DATETIME()) NOT NULL
+    );
 
-SELECT*FROM users;
+    -- DROP TABLE users;
 
-INSERT INTO users (id, email, password)
-VALUES(01, "rottschaefer54@gmail.com", "123456");
 
-INSERT INTO users (id, email, password)
-VALUES(02, "renan@gmail.com", "252525");
+INSERT INTO
+    users (id, name, email, password)
+VALUES
+(
+        "u001",
+        "Eduardo",
+        "rottschaefer54@gmail.com",
+        "123456"
+    ),
+    (
+        "u002",
+        "Renan",
+        "renan@gmail.com",
+        "252525"
+    ),
+    (
+        "u003",
+        "Luisa",
+        "luisa@hotmail.com",
+        "123456"
+    );
 
-INSERT INTO users (id, email, password)
-VALUES(03, "luisa@hotmail.com", "123456");
+    SELECT*FROM users;
 
-CREATE TABLE products(
-    id TEXT PRIMARY KEY UNIQUE NOT NULL,
-    name TEXT NOT NULL,
-    price REAL NOT NULL,
-    category TEXT NOT NULL
-);
+
+
+CREATE TABLE
+    products(
+        id TEXT PRIMARY KEY UNIQUE NOT NULL,
+        name TEXT NOT NULL,
+        price REAL NOT NULL,
+        description TEXT NOT NULL,
+        imageUrl TEXT NOT NULL
+    );
 
 SELECT*FROM products;
 
-INSERT INTO products(id, name, price, category)
-VALUES(01, "calça jeans", 60, "calças");
+INSERT INTO
+    products(id, name, price, description, imageUrl)
+VALUES
+("prod001","Monitor OLED", 1000, "Lindo Monitor OLED com 400 nits", "https://i.dell.com/is/image/DellContent//content/dam/ss2/product-images/dell-client-products/peripherals/monitors/alienware/aw3423dw/monitor-alienware-aw3423dw-pdp-hero.psd?qlt=95&fit=constrain,1&hei=3470&wid=5000&fmt=jpg"),
+("prod002","Mouse Gamer", 200, "Mouse Gamer com ultra sensibilidade", "https://m.media-amazon.com/images/I/61h97PFnuPL._AC_SY450_.jpg"),
+("prod003","Cooler RGB", 500, "O Cooler mais bonito do Brasil!", "https://down-br.img.susercontent.com/file/42412d63d4f51156ad518ad4f568a737_tn");
 
-INSERT INTO products(id, name, price, category)
-VALUES(02, "regata", 45, "blusas");
+CREATE TABLE
+    purchases(
+        id TEXT PRIMARY KEY UNIQUE NOT NULL,
+        buyer TEXT NOT NULL,
+        total_price INTEGER NOT NULL,
+        FOREIGN KEY (buyer) REFERENCES users(id)
+    );
 
-INSERT INTO products(id, name, price, category)
-VALUES(03, "boné supreme", 7000, "para trouxas");
-
---Aprofundamento SQL
-
---retorna todos os usuários cadastrados
-
-SELECT * FROM users;
-
---retorna todos os produtos cadastrados
-
-SELECT * FROM products;
-
---crie um termo de busca, por exemplo "monitor"
-
-DECLARE @busca TEXT = 'monitor'; -- Definindo a variável 
-
-SELECT * FROM products
-WHERE name LIKE '%monitor%';
-
---crie um novo usuário
---insere o item mockado na tabela users
-
-INSERT INTO users(id, email, password)
-VALUES(04, "guigui@gmail.com", "212121"); 
+INSERT INTO purchases(id, buyer, total_price)
+VALUES("pur001","u001", 400),("pur002","u002", 700),("pur003","u003", 1050) ;
 
 
---crie um novo produto
---insere o item mockado na tabela products
-
-INSERT INTO products(id, name, price, category)
-VALUES(06, "Gravata", 100, "Acessórios para Ternos");
-
-
---busca de produtos por id
-
-SELECT * FROM products
-WHERE id = 6;
-
---deleção de user por id
-
-DELETE FROM users
-WHERE id = 01;
-
-SELECT * FROM users;
-
---deleção de produto por id
-
-DELETE FROM products
-WHERE id = 01;
-
-SELECT * FROM products;
-
---edição de user por id
-
-UPDATE users
-SET password = "Atualizado"
-WHERE id = 2;
-
---edição de produto por id
-
-UPDATE products
-SET name = "Atualizado"
-WHERE id = 2;
+CREATE TABLE
+    purchases_products(
+        purchase_id TEXT NOT NULL,
+        product_id TEXT NOT NULL,
+        quantity REAL NOT NULL,
+        Foreign Key (purchase_id) REFERENCES purchases(id),
+        Foreign Key (product_id) REFERENCES products(id)
+    );
 
 
-SELECT * FROM users
-ORDER BY email DESC;
+INSERT INTO purchases_products(purchase_id, product_id, quantity)
+VALUES("pur001","prod001", 2), ("pur001","prod002", 1), ("pur001","prod003", 2), ("pur002","prod001", 3), ("pur003","prod002", 5);
 
-SELECT * FROM products
-ORDER BY price DESC
-LIMIT 20
-OFFSET 0;
+SELECT * FROm purchases_products;
 
-SELECT * FROM products
-WHERE price > 100 AND price < 300
-ORDER BY price ASC;
 
---relações-sql-1
 
-CREATE TABLE purchases(
-    id TEXT PRIMARY KEY UNIQUE NOT NULL,
-    total_price REAL NOT NULL,
-    paid INTEGER NOT NULL,
-    delivered_at TEXT,
-    buyer_id TEXT NOT NULL,
-    FOREIGN KEY (buyer_id) REFERENCES users(id)
-);
 
-INSERT INTO purchases(id, total_price, paid, buyer_id)
-VALUES(01, 100, 0, 2);
 
-INSERT INTO purchases(id, total_price, paid, buyer_id)
-VALUES(02, 200, 0, 2);
 
-INSERT INTO purchases(id, total_price, paid, buyer_id)
-VALUES(03, 77, 1, 3);
-
-INSERT INTO purchases(id, total_price, paid, buyer_id)
-VALUES(04, 566, 1, 3);
-
-UPDATE purchases
-SET delivered_at = datetime("now")
-WHERE id = 04;
-
-SELECT * FROM purchases
-INNER JOIN users
-ON purchases.buyer_id = users.id
-WHERE buyer_id = 3;
-
-SELECT datetime("now");
-
-SELECT * FROM purchases;
+    
